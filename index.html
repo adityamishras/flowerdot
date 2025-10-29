@@ -3,544 +3,1110 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>flowerzone</title>
-    <link rel="stylesheet" href="style.css" />
-    <script
-      src="https://kit.fontawesome.com/e362ff8530.js"
-      crossorigin="anonymous"
-    ></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <title>FlowerZone - Fresh Blooms</title>
+
+    <!-- Load Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Load Boxicons CDN -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Ephesis&family=IBM+Plex+Sans&family=Indie+Flower&family=Jost:ital,wght@1,900&family=Lunasima&family=Poppins:wght@100;200;300;400&family=Roboto+Slab&family=Rubik:wght@300&display=swap"
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
     />
-    <link rel="shortcut icon" href="adilogo.png" type="image/x-icon" id="webimage">
+
+    <!-- Configure Tailwind for Dark Theme & Custom Colors -->
+    <script>
+      tailwind.config = {
+        darkMode: "class", // Using 'class' for explicit dark mode, though applied globally here
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+            colors: {
+              // Custom flower-themed colors
+              primary: "#ec4899", // Vibrant Pink/Rose
+              secondary: "#f472b6", // Lighter Pink
+              "bg-dark": "#111827", // Deep Dark Slate (Body Background)
+              "bg-card": "#1f2937", // Slightly lighter Dark Slate (Card Background)
+              "text-light": "#f3f4f6", // Light Text
+              "text-muted": "#9ca3af", // Gray Text
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Custom style for smooth menu transition -->
+    <style>
+      /* Base styles for the dark theme application */
+      body {
+        background-color: #111827; /* bg-bg-dark */
+        color: #f3f4f6; /* text-text-light */
+        font-family: "Inter", sans-serif;
+        scroll-behavior: smooth;
+      }
+
+      /* Smooth transition for the mobile menu */
+      #mobile-menu {
+        transition: max-height 0.3s ease-in-out;
+        max-height: 0;
+        overflow: hidden;
+      }
+      #mobile-menu.open {
+        max-height: 400px;
+      }
+
+      /* Animation for the product icon group on hover */
+      .product-image:hover .product-icons {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    </style>
   </head>
-  <body>
-    <!-- header Section-->
-    <header>
-      <input type="checkbox" name="" id="toggler" />
-      <label for="toggler" class="fas fa-bars"></label>
-      <a href="#" class="logo">Flower <span>.</span></a>
 
-      <nav class="navbar">
-        <a href="#home" class="sectionlinks">home</a>
-        <a href="#about" class="sectionlinks">about</a>
-        <a href="#product" class="sectionlinks">product</a>
-        <a href="#review" class="sectionlinks">review</a>
-        <a href="#contact" class="sectionlinks">contact</a>
-      </nav>
+  <body class="bg-bg-dark text-text-light">
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 bg-bg-card shadow-lg shadow-gray-900/50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+          <!-- Logo -->
+          <a
+            href="#home"
+            class="text-3xl font-bold text-text-light hover:text-primary transition duration-300"
+          >
+            Flower<span class="text-primary">.</span>
+          </a>
 
-      <div class="icons">
-        <a href="#" class="fa-solid fa-heart"></a>
-        <a href="#" class="fa-solid fa-cart-shopping"></a>
-        <a href="#" class="fa-solid fa-user"></a>
+          <!-- Desktop Navigation Links -->
+          <nav class="hidden md:flex space-x-8">
+            <a
+              href="#home"
+              class="nav-link text-lg font-medium hover:text-primary transition duration-300"
+              >Home</a
+            >
+            <a
+              href="#about"
+              class="nav-link text-lg font-medium hover:text-primary transition duration-300"
+              >About</a
+            >
+            <a
+              href="#products"
+              class="nav-link text-lg font-medium hover:text-primary transition duration-300"
+              >Products</a
+            >
+            <a
+              href="#reviews"
+              class="nav-link text-lg font-medium hover:text-primary transition duration-300"
+              >Review</a
+            >
+            <a
+              href="#contact"
+              class="nav-link text-lg font-medium hover:text-primary transition duration-300"
+              >Contact</a
+            >
+          </nav>
+
+          <!-- Icons & Mobile Menu Button -->
+          <div class="flex items-center space-x-4">
+            <i
+              class="bx bx-heart text-2xl text-text-light cursor-pointer hover:text-primary transition duration-300 hidden sm:block"
+            ></i>
+            <i
+              class="bx bx-shopping-bag text-2xl text-text-light cursor-pointer hover:text-primary transition duration-300 hidden sm:block"
+              id="cart-icon"
+            ></i>
+            <i
+              class="bx bx-user text-2xl text-text-light cursor-pointer hover:text-primary transition duration-300 hidden sm:block"
+            ></i>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button
+              id="menu-toggler"
+              class="md:hidden p-2 rounded-lg text-text-light hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary transition duration-300"
+            >
+              <i id="menu-icon" class="bx bx-menu text-3xl"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu (Controlled by JS) -->
+      <div
+        id="mobile-menu"
+        class="md:hidden bg-gray-800 border-t border-gray-700"
+      >
+        <a
+          href="#home"
+          class="block py-3 px-6 text-base font-medium hover:bg-primary hover:text-white transition duration-200"
+          onclick="closeMenu()"
+          >Home</a
+        >
+        <a
+          href="#about"
+          class="block py-3 px-6 text-base font-medium hover:bg-primary hover:text-white transition duration-200"
+          onclick="closeMenu()"
+          >About</a
+        >
+        <a
+          href="#products"
+          class="block py-3 px-6 text-base font-medium hover:bg-primary hover:text-white transition duration-200"
+          onclick="closeMenu()"
+          >Products</a
+        >
+        <a
+          href="#reviews"
+          class="block py-3 px-6 text-base font-medium hover:bg-primary hover:text-white transition duration-200"
+          onclick="closeMenu()"
+          >Review</a
+        >
+        <a
+          href="#contact"
+          class="block py-3 px-6 text-base font-medium hover:bg-primary hover:text-white transition duration-200"
+          onclick="closeMenu()"
+          >Contact</a
+        >
       </div>
     </header>
 
-    <section id="home">
-      <div class="textcontainer">
-        <h2>Fresh Flowers</h2>
-        <h3>Natural & Beautiful Flowers</h3>
-        <p>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sunt alias
-          quos veritatis accusantium, modi excepturi nam doloribus, commodi id
-          deleniti animi praesentium assumenda distinctio provident dolorum
-          saepe beatae, ipsa voluptatum.
+    <!-- Home Section (Hero) -->
+    <section
+      class="home min-h-screen flex items-center justify-center p-4"
+      id="home"
+      style="
+        background-image: url('images/banner.jpeg');
+        background-size: cover;
+        background-position: center;
+      "
+    >
+      <div
+        class="home-content max-w-4xl text-center bg-gray-900/70 backdrop-blur-sm p-8 rounded-xl shadow-2xl"
+      >
+        <h1
+          class="text-6xl sm:text-7xl font-extrabold text-primary mb-3 leading-tight animate-pulse"
+        >
+          Fresh Flowers
+        </h1>
+        <h2 class="text-3xl sm:text-4xl font-light text-text-light mb-5">
+          Natural & Beautiful Blooms
+        </h2>
+        <p class="text-xl text-text-muted mb-10 max-w-2xl mx-auto">
+          Discover a curated collection of natural and vibrant flowers, perfect
+          for every occasion. We ensure the freshest delivery straight to your
+          door.
         </p>
-        <a class="shopbtn" href="#">Shop Now</a>
+        <a
+          class="btn inline-flex items-center justify-center text-lg font-semibold py-3 px-8 rounded-full bg-primary text-white shadow-xl hover:bg-secondary transition duration-300 transform hover:scale-105"
+          href="#products"
+        >
+          Shop Now <i class="bx bx-right-arrow-alt ml-2 text-xl"></i>
+        </a>
       </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="about">
-      <h1 class="heading"><span>About</span> us</h1>
-      <div class="row">
-        <div class="video-container">
-          <video
-            src="video/production_id_4267027 (2160p).mp4"
-            loop
-            autoplay
-            muted
-          ></video>
-          <h3>best flower seller</h3>
-        </div>
-        <div class="content">
-          <h3>why choose us ?</h3>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod
-            reiciendis ullam eveniet, nam quia modi fugit aliquam? Veniam ullam
-            quibusdam placeat dolores tempore tenetur illum odio, eaque ipsum
-            tempora dolore.Lorem ipsum dolor, sit amet consectetur adipisicing
-            elit. Nobis inventore perferendis eligendi exercitationem aperiam
-            temporibus cupiditate suscipit consequuntur dolorem? Facilis
-            reprehenderit quod modi dolorem. Explicabo ratione placeat harum
-            cumque est?
-          </p>
-          <a href="#" class="shopbtn">Learn more</a>
-        </div>
-      </div>
-    </section>
-    <section class="icon-container">
-      <div class="icons">
-        <img src="images/icon1.png" alt="" class="icon-img" />
-        <div class="info">
-          <h3>free delivery</h3>
-          <span>on all orders</span>
-        </div>
-      </div>
-      <div class="icons">
-        <img src="images/icon2.jpg" alt="" class="icon-img" />
-        <div class="info">
-          <h3>easy return</h3>
-          <span>on all orders</span>
-        </div>
-      </div>
-      <div class="icons">
-        <img src="images/icon3.png" alt="" class="icon-img" />
-        <div class="info">
-          <h3>offers & Gifts</h3>
-          <span>on all orders</span>
-        </div>
-      </div>
-      <div class="icons">
-        <img src="images/icon4.png" alt="" class="icon-img" />
-        <div class="info">
-          <h3>sequre payment</h3>
-          <span>on all orders</span>
+    <section class="about py-20 px-4" id="about">
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-4xl font-bold text-center mb-12">
+          <span class="text-primary">About</span> Us
+        </h2>
+        <div class="about-row flex flex-col md:flex-row items-center gap-12">
+          <!-- Video Placeholder -->
+          <div
+            class="video-container w-full md:w-1/2 rounded-xl overflow-hidden shadow-2xl relative"
+          >
+            <!-- Replaced video with a static image placeholder as external video loading can be unreliable -->
+            <video
+              src="video/production_id_4267027 (2160p).mp4"
+              class="w-full h-64 object-cover transition duration-500 group-hover:scale-110"
+              autoplay
+              loop
+              muted
+            ></video>
+            <h3
+              class="absolute bottom-0 left-0 right-0 bg-gray-900/70 p-4 text-2xl font-semibold text-center text-primary"
+            >
+              best flower seller
+            </h3>
+          </div>
+
+          <div class="content w-full md:w-1/2">
+            <h3 class="text-3xl font-semibold mb-4 text-text-light">
+              Why Choose Us?
+            </h3>
+            <p class="text-text-muted text-lg mb-4">
+              We are dedicated to providing the highest quality, hand-picked
+              flowers with unparalleled customer service. From farm to vase, we
+              guarantee freshness and beauty in every arrangement.
+            </p>
+            <p class="text-text-muted text-lg mb-8">
+              Our commitment to sustainability and local sourcing means you get
+              the best while supporting ethical practices.
+            </p>
+            <a
+              href="#contact"
+              class="btn inline-block text-lg font-medium py-2 px-6 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white transition duration-300 transform hover:shadow-lg"
+            >
+              Learn More
+            </a>
+          </div>
         </div>
       </div>
     </section>
 
-    <!--  product section -->
-    <section class="product" id="product">
-      <h1 class="heading">least <span>product</span></h1>
-      <div class="box-container">
-        <div class="box">
-          <span class="discount">Best Seller</span>
-          <div class="image">
-            <img
-              id="imagesize"
-              src="https://imgcdn.floweraura.com/DSC_1243_0.jpg?tr=w-264,q-70"
-              alt=""
-            />
-            <p class="productname">Classic 10 Red Roses Bouquet</p>
-            <b class="price">Rs 695</b>
-            <span class="rating"><i class="fa-solid fa-star"></i> 4</span>
-            <div class="icons">
-              <a href="" class="fa-solid fa-heart"></a>
-              <a href="" class="fa-solid fa-share"></a>
-              <a href="" class="fa-solid fa-cart-shopping"></a>
-            </div>
+    <!-- Service Icons Section -->
+    <section class="service-icons py-16 px-4">
+      <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+        <!-- Service Box 1: Free Delivery -->
+        <div
+          class="service-box flex items-center p-4 bg-bg-card rounded-xl shadow-lg hover:bg-gray-800 transition duration-300 transform hover:scale-[1.02]"
+        >
+          <i class="bx bxs-truck text-4xl text-primary mr-4"></i>
+          <div class="info">
+            <h3 class="text-xl font-semibold">Free Delivery</h3>
+            <span class="text-text-muted text-sm">on all orders</span>
           </div>
         </div>
-        <div class="box">
-          <!-- <span class="discount">Best Seller</span> -->
-          <div class="image">
-            <img
-              id="imagesize"
-              src="https://imgcdn.floweraura.com/DSC_1702_1.jpg?tr=w-264,q-70"
-              alt=""
-            />
-            <p class="productname">Eternity White Roses Bouquet</p>
-            <b class="price">Rs 745</b>
+        <!-- Service Box 2: Secure Payment -->
+        <div
+          class="service-box flex items-center p-4 bg-bg-card rounded-xl shadow-lg hover:bg-gray-800 transition duration-300 transform hover:scale-[1.02]"
+        >
+          <i class="bx bx-wallet text-4xl text-primary mr-4"></i>
+          <div class="info">
+            <h3 class="text-xl font-semibold">Secure Payment</h3>
+            <span class="text-text-muted text-sm">trusted gateway</span>
+          </div>
+        </div>
+        <!-- Service Box 3: Offers & Gifts -->
+        <div
+          class="service-box flex items-center p-4 bg-bg-card rounded-xl shadow-lg hover:bg-gray-800 transition duration-300 transform hover:scale-[1.02]"
+        >
+          <i class="bx bxs-gift text-4xl text-primary mr-4"></i>
+          <div class="info">
+            <h3 class="text-xl font-semibold">Offers & Gifts</h3>
+            <span class="text-text-muted text-sm">seasonal deals</span>
+          </div>
+        </div>
+        <!-- Service Box 4: Easy Returns -->
+        <div
+          class="service-box flex items-center p-4 bg-bg-card rounded-xl shadow-lg hover:bg-gray-800 transition duration-300 transform hover:scale-[1.02]"
+        >
+          <i class="bx bx-redo text-4xl text-primary mr-4"></i>
+          <div class="info">
+            <h3 class="text-xl font-semibold">Easy Returns</h3>
+            <span class="text-text-muted text-sm">if unsatisfied</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            <div class="icons">
-              <a href="" class="fa-solid fa-heart"></a>
-              <a href="" class="fa-solid fa-share"></a>
-              <a href="" class="fa-solid fa-cart-shopping"></a>
-            </div>
-          </div>
-        </div>
-        <div class="box">
-          <!-- <span class="discount">Best Seller</span> -->
-          <div class="image">
-            <img
-              id="imagesize"
-              src="https://imgcdn.floweraura.com/DSC_3928.jpg?tr=w-264,q-70"
-              alt=""
-            />
-            <p class="productname">Blue Vanda Orchid Jute Bouquet</p>
-            <b class="price">Rs 850</b>
+    <!-- Products Section -->
+    <section class="products py-20 px-4" id="products">
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-4xl font-bold text-center mb-12">
+          Our <span class="text-primary">Products</span>
+        </h2>
 
-            <div class="icons">
-              <a href="" class="fa-solid fa-heart"></a>
-              <a href="" class="fa-solid fa-share"></a>
-              <a href="" class="fa-solid fa-cart-shopping"></a>
-            </div>
-          </div>
-        </div>
-        <div class="box">
-          <span class="discount">Best Seller</span>
-          <div class="image">
-            <img
-              id="imagesize"
-              src="https://imgcdn.floweraura.com/DSC_5959.jpg?tr=w-264,q-70"
-              alt=""
-            />
-            <p class="productname">Blaze Red Velvet Roses</p>
-            <b class="price">Rs 695</b>
-            <span class="rating"><i class="fa-solid fa-star"></i> 4</span>
-            <div class="icons">
-              <a href="" class="fa-solid fa-heart"></a>
-              <a href="" class="fa-solid fa-share"></a>
-              <a href="" class="fa-solid fa-cart-shopping"></a>
-            </div>
-          </div>
-        </div>
-        <div class="box">
-          <span class="discount">Best Seller</span>
-          <div class="image">
-            <img
-              id="imagesize"
-              src="https://imgcdn.floweraura.com/DSC_5281.jpg?tr=w-264,q-70"
-              alt=""
-            />
-            <p class="productname">Roseate Elegance Bouquet</p>
-            <b class="price">Rs 1095</b>
-            <span class="rating"><i class="fa-solid fa-star"></i> 4.5</span>
-            <div class="icons">
-              <a href="" class="fa-solid fa-heart"></a>
-              <a href="" class="fa-solid fa-share"></a>
-              <a href="" class="fa-solid fa-cart-shopping"></a>
-            </div>
-          </div>
-        </div>
-        <div class="box">
-          <span class="discount">Best Seller</span>
-          <div class="image">
-            <img
-              id="imagesize"
-              src="https://imgcdn.floweraura.com/1-B_91.jpg?tr=w-264,q-70"
-              alt=""
-            />
-            <p class="productname">Bellina Purple Orchid Bouquet</p>
-            <b class="price">Rs 850</b>
-            <span class="rating"><i class="fa-solid fa-star"></i> 4.8</span>
-            <div class="icons">
-              <a href="" class="fa-solid fa-heart"></a>
-              <a href="" class="fa-solid fa-share"></a>
-              <a href="" class="fa-solid fa-cart-shopping"></a>
-            </div>
-          </div>
-        </div>
-        <div class="box">
-          <span class="discount">Best Seller</span>
-          <div class="image">
-            <img
-              id="imagesize"
-              src="https://imgcdn.floweraura.com/FRS08-A.jpg?tr=w-264,q-70"
-              alt=""
-            />
-            <p class="productname">Garden Symphony</p>
-            <b class="price">Rs 890</b>
-            <span class="rating"><i class="fa-solid fa-star"></i> 4.3</span>
-            <div class="icons">
-              <a href="" class="fa-solid fa-heart"></a>
-              <a href="" class="fa-solid fa-share"></a>
-              <a href="" class="fa-solid fa-cart-shopping"></a>
-            </div>
-          </div>
-        </div>
-        <div class="box">
-            <!-- <span class="discount">Best Seller</span> -->
-            <div class="image">
+        <div class="products-grid grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <!-- Product Card 1 -->
+          <div
+            class="product-box group bg-bg-card rounded-xl shadow-xl overflow-hidden relative transition duration-500 transform hover:scale-[1.03]"
+          >
+            <span
+              class="discount absolute top-4 left-0 bg-primary text-white text-xs font-bold py-1 px-4 rounded-r-full z-10"
+              >Best Seller</span
+            >
+            <div class="product-image relative overflow-hidden">
               <img
-                id="imagesize"
-                src="https://imgcdn.floweraura.com/DSC_3628.jpg?tr=w-264,q-70"
-                alt=""
+                src="https://imgcdn.floweraura.com/DSC_1243_0.jpg?tr=w-300,q-70"
+                alt="Classic Red Roses"
+                class="w-full h-64 object-cover transition duration-500 group-hover:scale-110"
               />
-              <p class="productname">Euphoric Yellow Symphony</p>
-              <b class="price">Rs 400</b>
-              <span class="rating"><i class="fa-solid fa-star"></i> 4.3</span>
-              <div class="icons">
-                <a href="" class="fa-solid fa-heart"></a>
-                <a href="" class="fa-solid fa-share"></a>
-                <a href="" class="fa-solid fa-cart-shopping"></a>
+              <div
+                class="product-icons absolute inset-0 bg-black/50 flex items-center justify-center space-x-4 opacity-0 transition duration-500 transform translate-y-full group-hover:opacity-100 group-hover:translate-y-0"
+              >
+                <a
+                  href="#"
+                  class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-gray-800 hover:bg-primary hover:text-white transition duration-300"
+                  ><i class="bx bx-heart text-xl"></i
+                ></a>
+                <a
+                  href="#"
+                  class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-gray-800 hover:bg-primary hover:text-white transition duration-300"
+                  ><i class="bx bx-share-alt text-xl"></i
+                ></a>
+                <a
+                  href="#"
+                  class="add-to-cart w-10 h-10 flex items-center justify-center bg-primary rounded-full text-white hover:bg-secondary transition duration-300"
+                  ><i class="bx bx-shopping-bag text-xl"></i
+                ></a>
+              </div>
+            </div>
+            <div class="product-details p-5">
+              <h4
+                class="product-name text-lg font-semibold mb-2 text-text-light"
+              >
+                Classic 10 Red Roses Bouquet
+              </h4>
+              <div
+                class="price-rating flex justify-between items-center text-lg"
+              >
+                <span class="price text-primary font-bold">Rs 695</span>
+                <span class="rating text-text-muted text-sm flex items-center"
+                  >4.0 <i class="bx bxs-star text-yellow-400 ml-1"></i
+                ></span>
               </div>
             </div>
           </div>
-      </div>
-      <div class="box-container">
-        <div class="box">
-          <span class="discount">Best Seller</span>
-          <div class="image">
-            <img
-              id="imagesize"
-              src="https://imgcdn.floweraura.com/DSC_1243_0.jpg?tr=w-264,q-70"
-              alt=""
-            />
-            <p class="productname">Classic 10 Red Roses Bouquet</p>
-            <b class="price">Rs 695</b>
-            <span class="rating"><i class="fa-solid fa-star"></i> 4</span>
-            <div class="icons">
-              <a href="" class="fa-solid fa-heart"></a>
-              <a href="" class="fa-solid fa-share"></a>
-              <a href="" class="fa-solid fa-cart-shopping"></a>
-            </div>
-          </div>
-        </div>
-        <div class="box">
-          <!-- <span class="discount">Best Seller</span> -->
-          <div class="image">
-            <img
-              id="imagesize"
-              src="https://imgcdn.floweraura.com/DSC_1702_1.jpg?tr=w-264,q-70"
-              alt=""
-            />
-            <p class="productname">Eternity White Roses Bouquet</p>
-            <b class="price">Rs 745</b>
 
-            <div class="icons">
-              <a href="" class="fa-solid fa-heart"></a>
-              <a href="" class="fa-solid fa-share"></a>
-              <a href="" class="fa-solid fa-cart-shopping"></a>
-            </div>
-          </div>
-        </div>
-        <div class="box">
-          <!-- <span class="discount">Best Seller</span> -->
-          <div class="image">
-            <img
-              id="imagesize"
-              src="https://imgcdn.floweraura.com/DSC_3928.jpg?tr=w-264,q-70"
-              alt=""
-            />
-            <p class="productname">Blue Vanda Orchid Jute Bouquet</p>
-            <b class="price">Rs 850</b>
-
-            <div class="icons">
-              <a href="" class="fa-solid fa-heart"></a>
-              <a href="" class="fa-solid fa-share"></a>
-              <a href="" class="fa-solid fa-cart-shopping"></a>
-            </div>
-          </div>
-        </div>
-        <div class="box">
-          <span class="discount">Best Seller</span>
-          <div class="image">
-            <img
-              id="imagesize"
-              src="https://imgcdn.floweraura.com/DSC_5959.jpg?tr=w-264,q-70"
-              alt=""
-            />
-            <p class="productname">Blaze Red Velvet Roses</p>
-            <b class="price">Rs 695</b>
-            <span class="rating"><i class="fa-solid fa-star"></i> 4</span>
-            <div class="icons">
-              <a href="" class="fa-solid fa-heart"></a>
-              <a href="" class="fa-solid fa-share"></a>
-              <a href="" class="fa-solid fa-cart-shopping"></a>
-            </div>
-          </div>
-        </div>
-        <div class="box">
-          <span class="discount">Best Seller</span>
-          <div class="image">
-            <img
-              id="imagesize"
-              src="https://imgcdn.floweraura.com/DSC_5281.jpg?tr=w-264,q-70"
-              alt=""
-            />
-            <p class="productname">Roseate Elegance Bouquet</p>
-            <b class="price">Rs 1095</b>
-            <span class="rating"><i class="fa-solid fa-star"></i> 4.5</span>
-            <div class="icons">
-              <a href="" class="fa-solid fa-heart"></a>
-              <a href="" class="fa-solid fa-share"></a>
-              <a href="" class="fa-solid fa-cart-shopping"></a>
-            </div>
-          </div>
-        </div>
-        <div class="box">
-          <span class="discount">Best Seller</span>
-          <div class="image">
-            <img
-              id="imagesize"
-              src="https://imgcdn.floweraura.com/1-B_91.jpg?tr=w-264,q-70"
-              alt=""
-            />
-            <p class="productname">Bellina Purple Orchid Bouquet</p>
-            <b class="price">Rs 850</b>
-            <span class="rating"><i class="fa-solid fa-star"></i> 4.8</span>
-            <div class="icons">
-              <a href="" class="fa-solid fa-heart"></a>
-              <a href="" class="fa-solid fa-share"></a>
-              <a href="" class="fa-solid fa-cart-shopping"></a>
-            </div>
-          </div>
-        </div>
-        <div class="box">
-          <span class="discount">Best Seller</span>
-          <div class="image">
-            <img
-              id="imagesize"
-              src="https://imgcdn.floweraura.com/FRS08-A.jpg?tr=w-264,q-70"
-              alt=""
-            />
-            <p class="productname">Garden Symphony</p>
-            <b class="price">Rs 890</b>
-            <span class="rating"><i class="fa-solid fa-star"></i> 4.3</span>
-            <div class="icons">
-              <a href="" class="fa-solid fa-heart"></a>
-              <a href="" class="fa-solid fa-share"></a>
-              <a href="" class="fa-solid fa-cart-shopping"></a>
-            </div>
-          </div>
-        </div>
-        <div class="box">
-            <!-- <span class="discount">Best Seller</span> -->
-            <div class="image">
+          <!-- Product Card 2 (No discount) -->
+          <div
+            class="product-box group bg-bg-card rounded-xl shadow-xl overflow-hidden relative transition duration-500 transform hover:scale-[1.03]"
+          >
+            <div class="product-image relative overflow-hidden">
               <img
-                id="imagesize"
-                src="https://imgcdn.floweraura.com/DSC_3628.jpg?tr=w-264,q-70"
-                alt=""
+                src="https://imgcdn.floweraura.com/DSC_1702_1.jpg?tr=w-300,q-70"
+                alt="Eternity White Roses"
+                class="w-full h-64 object-cover transition duration-500 group-hover:scale-110"
               />
-              <p class="productname">Euphoric Yellow Symphony</p>
-              <b class="price">Rs 400</b>
-              <span class="rating"><i class="fa-solid fa-star"></i> 4.3</span>
-              <div class="icons">
-                <a href="" class="fa-solid fa-heart"></a>
-                <a href="" class="fa-solid fa-share"></a>
-                <a href="" class="fa-solid fa-cart-shopping"></a>
+              <div
+                class="product-icons absolute inset-0 bg-black/50 flex items-center justify-center space-x-4 opacity-0 transition duration-500 transform translate-y-full group-hover:opacity-100 group-hover:translate-y-0"
+              >
+                <a
+                  href="#"
+                  class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-gray-800 hover:bg-primary hover:text-white transition duration-300"
+                  ><i class="bx bx-heart text-xl"></i
+                ></a>
+                <a
+                  href="#"
+                  class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-gray-800 hover:bg-primary hover:text-white transition duration-300"
+                  ><i class="bx bx-share-alt text-xl"></i
+                ></a>
+                <a
+                  href="#"
+                  class="add-to-cart w-10 h-10 flex items-center justify-center bg-primary rounded-full text-white hover:bg-secondary transition duration-300"
+                  ><i class="bx bx-shopping-bag text-xl"></i
+                ></a>
+              </div>
+            </div>
+            <div class="product-details p-5">
+              <h4
+                class="product-name text-lg font-semibold mb-2 text-text-light"
+              >
+                Eternity White Roses Bouquet
+              </h4>
+              <div
+                class="price-rating flex justify-between items-center text-lg"
+              >
+                <span class="price text-primary font-bold">Rs 745</span>
+                <!-- No rating data provided, so I'll omit it for consistency -->
               </div>
             </div>
           </div>
+
+          <!-- Product Card 3 -->
+          <div
+            class="product-box group bg-bg-card rounded-xl shadow-xl overflow-hidden relative transition duration-500 transform hover:scale-[1.03]"
+          >
+            <div class="product-image relative overflow-hidden">
+              <img
+                src="https://imgcdn.floweraura.com/DSC_3928.jpg?tr=w-300,q-70"
+                alt="Blue Vanda Orchid"
+                class="w-full h-64 object-cover transition duration-500 group-hover:scale-110"
+              />
+              <div
+                class="product-icons absolute inset-0 bg-black/50 flex items-center justify-center space-x-4 opacity-0 transition duration-500 transform translate-y-full group-hover:opacity-100 group-hover:translate-y-0"
+              >
+                <a
+                  href="#"
+                  class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-gray-800 hover:bg-primary hover:text-white transition duration-300"
+                  ><i class="bx bx-heart text-xl"></i
+                ></a>
+                <a
+                  href="#"
+                  class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-gray-800 hover:bg-primary hover:text-white transition duration-300"
+                  ><i class="bx bx-share-alt text-xl"></i
+                ></a>
+                <a
+                  href="#"
+                  class="add-to-cart w-10 h-10 flex items-center justify-center bg-primary rounded-full text-white hover:bg-secondary transition duration-300"
+                  ><i class="bx bx-shopping-bag text-xl"></i
+                ></a>
+              </div>
+            </div>
+            <div class="product-details p-5">
+              <h4
+                class="product-name text-lg font-semibold mb-2 text-text-light"
+              >
+                Blue Vanda Orchid Jute Bouquet
+              </h4>
+              <div
+                class="price-rating flex justify-between items-center text-lg"
+              >
+                <span class="price text-primary font-bold">Rs 850</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 4 -->
+          <div
+            class="product-box group bg-bg-card rounded-xl shadow-xl overflow-hidden relative transition duration-500 transform hover:scale-[1.03]"
+          >
+            <span
+              class="discount absolute top-4 left-0 bg-primary text-white text-xs font-bold py-1 px-4 rounded-r-full z-10"
+              >Best Seller</span
+            >
+            <div class="product-image relative overflow-hidden">
+              <img
+                src="https://imgcdn.floweraura.com/DSC_5959.jpg?tr=w-300,q-70"
+                alt="Blaze Red Velvet Roses"
+                class="w-full h-64 object-cover transition duration-500 group-hover:scale-110"
+              />
+              <div
+                class="product-icons absolute inset-0 bg-black/50 flex items-center justify-center space-x-4 opacity-0 transition duration-500 transform translate-y-full group-hover:opacity-100 group-hover:translate-y-0"
+              >
+                <a
+                  href="#"
+                  class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-gray-800 hover:bg-primary hover:text-white transition duration-300"
+                  ><i class="bx bx-heart text-xl"></i
+                ></a>
+                <a
+                  href="#"
+                  class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-gray-800 hover:bg-primary hover:text-white transition duration-300"
+                  ><i class="bx bx-share-alt text-xl"></i
+                ></a>
+                <a
+                  href="#"
+                  class="add-to-cart w-10 h-10 flex items-center justify-center bg-primary rounded-full text-white hover:bg-secondary transition duration-300"
+                  ><i class="bx bx-shopping-bag text-xl"></i
+                ></a>
+              </div>
+            </div>
+            <div class="product-details p-5">
+              <h4
+                class="product-name text-lg font-semibold mb-2 text-text-light"
+              >
+                Blaze Red Velvet Roses
+              </h4>
+              <div
+                class="price-rating flex justify-between items-center text-lg"
+              >
+                <span class="price text-primary font-bold">Rs 695</span>
+                <span class="rating text-text-muted text-sm flex items-center"
+                  >4.0 <i class="bx bxs-star text-yellow-400 ml-1"></i
+                ></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 5 -->
+          <div
+            class="product-box group bg-bg-card rounded-xl shadow-xl overflow-hidden relative transition duration-500 transform hover:scale-[1.03]"
+          >
+            <span
+              class="discount absolute top-4 left-0 bg-primary text-white text-xs font-bold py-1 px-4 rounded-r-full z-10"
+              >Best Seller</span
+            >
+            <div class="product-image relative overflow-hidden">
+              <img
+                src="https://imgcdn.floweraura.com/DSC_5281.jpg?tr=w-300,q-70"
+                alt="Roseate Elegance"
+                class="w-full h-64 object-cover transition duration-500 group-hover:scale-110"
+              />
+              <div
+                class="product-icons absolute inset-0 bg-black/50 flex items-center justify-center space-x-4 opacity-0 transition duration-500 transform translate-y-full group-hover:opacity-100 group-hover:translate-y-0"
+              >
+                <a
+                  href="#"
+                  class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-gray-800 hover:bg-primary hover:text-white transition duration-300"
+                  ><i class="bx bx-heart text-xl"></i
+                ></a>
+                <a
+                  href="#"
+                  class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-gray-800 hover:bg-primary hover:text-white transition duration-300"
+                  ><i class="bx bx-share-alt text-xl"></i
+                ></a>
+                <a
+                  href="#"
+                  class="add-to-cart w-10 h-10 flex items-center justify-center bg-primary rounded-full text-white hover:bg-secondary transition duration-300"
+                  ><i class="bx bx-shopping-bag text-xl"></i
+                ></a>
+              </div>
+            </div>
+            <div class="product-details p-5">
+              <h4
+                class="product-name text-lg font-semibold mb-2 text-text-light"
+              >
+                Roseate Elegance Bouquet
+              </h4>
+              <div
+                class="price-rating flex justify-between items-center text-lg"
+              >
+                <span class="price text-primary font-bold">Rs 1095</span>
+                <span class="rating text-text-muted text-sm flex items-center"
+                  >4.5 <i class="bx bxs-star text-yellow-400 ml-1"></i
+                ></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 6 -->
+          <div
+            class="product-box group bg-bg-card rounded-xl shadow-xl overflow-hidden relative transition duration-500 transform hover:scale-[1.03]"
+          >
+            <span
+              class="discount absolute top-4 left-0 bg-primary text-white text-xs font-bold py-1 px-4 rounded-r-full z-10"
+              >Best Seller</span
+            >
+            <div class="product-image relative overflow-hidden">
+              <img
+                src="https://imgcdn.floweraura.com/1-B_91.jpg?tr=w-300,q-70"
+                alt="Bellina Purple Orchid"
+                class="w-full h-64 object-cover transition duration-500 group-hover:scale-110"
+              />
+              <div
+                class="product-icons absolute inset-0 bg-black/50 flex items-center justify-center space-x-4 opacity-0 transition duration-500 transform translate-y-full group-hover:opacity-100 group-hover:translate-y-0"
+              >
+                <a
+                  href="#"
+                  class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-gray-800 hover:bg-primary hover:text-white transition duration-300"
+                  ><i class="bx bx-heart text-xl"></i
+                ></a>
+                <a
+                  href="#"
+                  class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-gray-800 hover:bg-primary hover:text-white transition duration-300"
+                  ><i class="bx bx-share-alt text-xl"></i
+                ></a>
+                <a
+                  href="#"
+                  class="add-to-cart w-10 h-10 flex items-center justify-center bg-primary rounded-full text-white hover:bg-secondary transition duration-300"
+                  ><i class="bx bx-shopping-bag text-xl"></i
+                ></a>
+              </div>
+            </div>
+            <div class="product-details p-5">
+              <h4
+                class="product-name text-lg font-semibold mb-2 text-text-light"
+              >
+                Bellina Purple Orchid Bouquet
+              </h4>
+              <div
+                class="price-rating flex justify-between items-center text-lg"
+              >
+                <span class="price text-primary font-bold">Rs 850</span>
+                <span class="rating text-text-muted text-sm flex items-center"
+                  >4.8 <i class="bx bxs-star text-yellow-400 ml-1"></i
+                ></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 7 -->
+          <div
+            class="product-box group bg-bg-card rounded-xl shadow-xl overflow-hidden relative transition duration-500 transform hover:scale-[1.03]"
+          >
+            <span
+              class="discount absolute top-4 left-0 bg-primary text-white text-xs font-bold py-1 px-4 rounded-r-full z-10"
+              >Best Seller</span
+            >
+            <div class="product-image relative overflow-hidden">
+              <img
+                src="https://imgcdn.floweraura.com/FRS08-A.jpg?tr=w-300,q-70"
+                alt="Garden Symphony"
+                class="w-full h-64 object-cover transition duration-500 group-hover:scale-110"
+              />
+              <div
+                class="product-icons absolute inset-0 bg-black/50 flex items-center justify-center space-x-4 opacity-0 transition duration-500 transform translate-y-full group-hover:opacity-100 group-hover:translate-y-0"
+              >
+                <a
+                  href="#"
+                  class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-gray-800 hover:bg-primary hover:text-white transition duration-300"
+                  ><i class="bx bx-heart text-xl"></i
+                ></a>
+                <a
+                  href="#"
+                  class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-gray-800 hover:bg-primary hover:text-white transition duration-300"
+                  ><i class="bx bx-share-alt text-xl"></i
+                ></a>
+                <a
+                  href="#"
+                  class="add-to-cart w-10 h-10 flex items-center justify-center bg-primary rounded-full text-white hover:bg-secondary transition duration-300"
+                  ><i class="bx bx-shopping-bag text-xl"></i
+                ></a>
+              </div>
+            </div>
+            <div class="product-details p-5">
+              <h4
+                class="product-name text-lg font-semibold mb-2 text-text-light"
+              >
+                Garden Symphony
+              </h4>
+              <div
+                class="price-rating flex justify-between items-center text-lg"
+              >
+                <span class="price text-primary font-bold">Rs 890</span>
+                <span class="rating text-text-muted text-sm flex items-center"
+                  >4.3 <i class="bx bxs-star text-yellow-400 ml-1"></i
+                ></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 8 -->
+          <div
+            class="product-box group bg-bg-card rounded-xl shadow-xl overflow-hidden relative transition duration-500 transform hover:scale-[1.03]"
+          >
+            <div class="product-image relative overflow-hidden">
+              <img
+                src="https://imgcdn.floweraura.com/DSC_3628.jpg?tr=w-300,q-70"
+                alt="Euphoric Yellow Symphony"
+                class="w-full h-64 object-cover transition duration-500 group-hover:scale-110"
+              />
+              <div
+                class="product-icons absolute inset-0 bg-black/50 flex items-center justify-center space-x-4 opacity-0 transition duration-500 transform translate-y-full group-hover:opacity-100 group-hover:translate-y-0"
+              >
+                <a
+                  href="#"
+                  class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-gray-800 hover:bg-primary hover:text-white transition duration-300"
+                  ><i class="bx bx-heart text-xl"></i
+                ></a>
+                <a
+                  href="#"
+                  class="w-10 h-10 flex items-center justify-center bg-white rounded-full text-gray-800 hover:bg-primary hover:text-white transition duration-300"
+                  ><i class="bx bx-share-alt text-xl"></i
+                ></a>
+                <a
+                  href="#"
+                  class="add-to-cart w-10 h-10 flex items-center justify-center bg-primary rounded-full text-white hover:bg-secondary transition duration-300"
+                  ><i class="bx bx-shopping-bag text-xl"></i
+                ></a>
+              </div>
+            </div>
+            <div class="product-details p-5">
+              <h4
+                class="product-name text-lg font-semibold mb-2 text-text-light"
+              >
+                Euphoric Yellow Symphony
+              </h4>
+              <div
+                class="price-rating flex justify-between items-center text-lg"
+              >
+                <span class="price text-primary font-bold">Rs 400</span>
+                <span class="rating text-text-muted text-sm flex items-center"
+                  >4.3 <i class="bx bxs-star text-yellow-400 ml-1"></i
+                ></span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Review Section -->
-    <section class="review" id="review">
-      <h1 class="heading">least <span>product</span></h1>
-      <div class="conatinerrow">
-        <div class="reviewbox">
-            <div class="ratingstar">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
+    <!-- Reviews Section -->
+    <section class="reviews py-20 px-4 bg-gray-900" id="reviews">
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-4xl font-bold text-center mb-12">
+          Customer <span class="text-primary">Reviews</span>
+        </h2>
+        <div class="review-grid grid md:grid-cols-3 gap-8">
+          <!-- Review Box 1 -->
+          <div
+            class="review-box p-6 bg-bg-card rounded-xl shadow-xl border border-gray-700"
+          >
+            <div class="rating-stars text-yellow-400 mb-3 text-xl">
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
             </div>
-            <p class="userreviewtext">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla
-              molestias enim soluta esse accusantium facilis voluptatem nisi unde.
-              Et illo culpa ex natus asperiores aspernatur. Eligendi rerum quaerat
-              omnis! Iste!
+            <p class="review-text text-text-light mb-5 italic">
+              "Absolutely stunning flowers! The bouquet arrived fresh, vibrant,
+              and on time. This is my new go-to for all my floral needs. Highly
+              recommend!"
             </p>
-            <div class="userprofile">
-              <img class="userimage"src="images/user.png" alt="" />
-              <div class="usernamelinks">
-                <h3>avnish sharma</h3>
-                <h2>@avinashsharma</h2>
-            </div>
-            </div>
-          </div>
-        <div class="reviewbox">
-            <div class="ratingstar">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-            </div>
-            <p class="userreviewtext">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla
-              molestias enim soluta esse accusantium facilis voluptatem nisi unde.
-             
-            </p>
-            <div class="userprofile">
-              <img class="userimage"src="images/user3.png" alt="" />
-              <div class="usernamelinks">
-                <h3>avnish sharma</h3>
-                <h2>@avinashsharma</h2>
-            </div>
+            <div
+              class="user-profile flex items-center pt-4 border-t border-gray-700"
+            >
+              <!-- User Image Placeholder -->
+              <img
+                class="user-img w-12 h-12 rounded-full object-cover mr-4 ring-2 ring-primary"
+                src="images/user2.png"
+                alt="User Avatar"
+              />
+              <div class="user-details">
+                <h3 class="text-lg font-semibold text-text-light">
+                  Avnish Sharma
+                </h3>
+                <span class="text-sm text-text-muted">@avinashsharma</span>
+              </div>
             </div>
           </div>
-        <div class="reviewbox">
-          <div class="ratingstar">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-          </div>
-          <p class="userreviewtext">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla
-            molestias enim soluta esse accusantium facilis voluptatem nisi unde.
-            Et illo culpa ex natus asperiores aspernatur. Eligendi rerum quaerat
-            omnis! Iste!
-          </p>
-          <div class="userprofile">
-            <img class="userimage"src="images/user2.png" alt="" />
-            <div class="usernamelinks">
-                <h3>avnish sharma</h3>
-                <h2>@avinashsharma</h2>
-            </div>
 
+          <!-- Review Box 2 -->
+          <div
+            class="review-box p-6 bg-bg-card rounded-xl shadow-xl border border-gray-700"
+          >
+            <div class="rating-stars text-yellow-400 mb-3 text-xl">
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star-half"></i>
+            </div>
+            <p class="review-text text-text-light mb-5 italic">
+              "The delivery was quick, and the presentation was beautiful. My
+              wife loved the Roseate Elegance Bouquet. Excellent service!"
+            </p>
+            <div
+              class="user-profile flex items-center pt-4 border-t border-gray-700"
+            >
+              <!-- User Image Placeholder -->
+              <img
+                class="user-img w-12 h-12 rounded-full object-cover mr-4 ring-2 ring-primary"
+                src="images/user3.png"
+                alt="User Avatar"
+              />
+              <div class="user-details">
+                <h3 class="text-lg font-semibold text-text-light">
+                  Priya Singh
+                </h3>
+                <span class="text-sm text-text-muted">@priyasingh01</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Review Box 3 -->
+          <div
+            class="review-box p-6 bg-bg-card rounded-xl shadow-xl border border-gray-700"
+          >
+            <div class="rating-stars text-yellow-400 mb-3 text-xl">
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+            </div>
+            <p class="review-text text-text-light mb-5 italic">
+              "Great value for money! The flowers lasted much longer than
+              expected. The ordering process was simple and the team was very
+              helpful."
+            </p>
+            <div
+              class="user-profile flex items-center pt-4 border-t border-gray-700"
+            >
+              <!-- User Image Placeholder -->
+              <img
+                class="user-img w-12 h-12 rounded-full object-cover mr-4 ring-2 ring-primary"
+                src="images/user.png"
+                alt="User Avatar"
+              />
+              <div class="user-details">
+                <h3 class="text-lg font-semibold text-text-light">
+                  Rajesh Kumar
+                </h3>
+                <span class="text-sm text-text-muted">@rajeshk_dev</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <h1 class="heading">Contact<span> Us</span></h1>
-        <div class="contactrow">
-                <form action="" method="">
-                    <!-- name -->
-                    <label id="name" for="name">Name</label>
-                    <input type="email" name="name" id="email">
-                    <label for="tel">Phone Number</label>
-                    <input type="tel" name="tel" id="tel">
-                    <label for="query">Comment</label>
-                    <input type="text" name="query" id="query">
-                    <input type="submit" value="submit" id="submitbtn">
-                </form>
-            <div class="ownercontacttemplate">
-                <p class="contactus">Contact : <a class="contactlinks"href="tel:9876656432">98766 56432</a></p>
-                <p class="contactus">E-mail  : <a class="contactlinks"href="mailto:flowerfurnsih@email.com">flowerfurnsih@email.com</a></p>
-                <p class="contactus">Address : <a class="contactlinks"href="">Delhi, India</a></p>
-                <p class="contactus">Website : <a class="contactlinks"href="#">www.flower.com</a></p>
-                
+    <section class="contact py-20 px-4" id="contact">
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-4xl font-bold text-center mb-12">
+          Get In <span class="text-primary">Touch</span>
+        </h2>
+        <div
+          class="contact-row flex flex-col lg:flex-row gap-12 bg-bg-card p-8 rounded-xl shadow-2xl border border-gray-800"
+        >
+          <!-- Contact Form -->
+          <form
+            action="#"
+            method="POST"
+            class="contact-form w-full lg:w-2/3 space-y-6"
+          >
+            <div class="grid sm:grid-cols-2 gap-6">
+              <div class="input-box">
+                <label for="name" class="block text-text-muted mb-2"
+                  >Name</label
+                >
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  required
+                  placeholder="Enter your full name"
+                  class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:ring-primary focus:border-primary text-text-light transition duration-300"
+                />
+              </div>
+              <div class="input-box">
+                <label for="email" class="block text-text-muted mb-2"
+                  >Email</label
+                >
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  required
+                  placeholder="Enter your email"
+                  class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:ring-primary focus:border-primary text-text-light transition duration-300"
+                />
+              </div>
+              <div class="input-box">
+                <label for="tel" class="block text-text-muted mb-2"
+                  >Phone Number</label
+                >
+                <input
+                  type="tel"
+                  name="tel"
+                  id="tel"
+                  placeholder="Enter your phone number"
+                  class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:ring-primary focus:border-primary text-text-light transition duration-300"
+                />
+              </div>
             </div>
+            <div class="input-box full-width">
+              <label for="query" class="block text-text-muted mb-2"
+                >Comment / Message</label
+              >
+              <textarea
+                name="query"
+                id="query"
+                rows="5"
+                placeholder="Enter your query or comment"
+                class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:ring-primary focus:border-primary text-text-light transition duration-300"
+              ></textarea>
+            </div>
+            <button
+              type="submit"
+              class="btn submit-btn inline-block text-lg font-semibold py-3 px-8 rounded-full bg-primary text-white shadow-lg shadow-primary/30 hover:bg-secondary transition duration-300 transform hover:scale-[1.02]"
+            >
+              Send Message
+            </button>
+          </form>
+
+          <!-- Contact Info -->
+          <div
+            class="contact-info w-full lg:w-1/3 space-y-6 lg:border-l lg:border-gray-700 lg:pl-12"
+          >
+            <h3 class="text-2xl font-semibold mb-4 text-text-light">
+              Our Details
+            </h3>
+            <p class="flex items-center text-text-muted">
+              <i class="bx bx-phone text-2xl text-primary mr-3"></i>
+              <span class="info-text"
+                >Contact:
+                <a
+                  href="tel:9876656432"
+                  class="info-link text-text-light hover:text-primary transition duration-300"
+                  >98766 56432</a
+                >
+              </span>
+            </p>
+            <p class="flex items-center text-text-muted">
+              <i class="bx bx-envelope text-2xl text-primary mr-3"></i>
+              <span class="info-text"
+                >Email:
+                <a
+                  href="mailto:flowerfurnsih@email.com"
+                  class="info-link text-text-light hover:text-primary transition duration-300"
+                  >flowerfurnsih@email.com</a
+                >
+              </span>
+            </p>
+            <p class="flex items-center text-text-muted">
+              <i class="bx bx-map text-2xl text-primary mr-3"></i>
+              <span class="info-text"
+                >Address:
+                <span class="info-text text-text-light">Delhi, India</span>
+              </span>
+            </p>
+            <p class="flex items-center text-text-muted">
+              <i class="bx bx-globe text-2xl text-primary mr-3"></i>
+              <span class="info-text"
+                >Website:
+                <a
+                  href="#"
+                  class="info-link text-text-light hover:text-primary transition duration-300"
+                  >www.flower.com</a
+                >
+              </span>
+            </p>
+          </div>
         </div>
+      </div>
     </section>
 
-    <section class="footer">
-        <div class="footerrow">
-         <ul class="contactaddress">
-            <li class="linksofcontact"><a href="">Contact Us</a></li>
-            <li class="linksofcontact"><a href="">Terams Of Use</a></li>
-            <li class="linksofcontact"><a href="">Privicy Policy</a></li>
-            <li class="linksofcontact"><a href="">User Experience</a></li>
-            <li class="linksofcontact"><a href="">Cookie Policy</a></li>
-            <li class="linksofcontact"><a href="">free Services</a></li>
-         </ul>
-
-         <ul class="smallterms">
-            <li class="linksmallterms"><a href="">About Us</a></li>
-            <li class="linksmallterms"><a href="">Vlogs</a></li>
-            <li class="linksmallterms"><a href="">Posts</a></li>
-            <li class="linksmallterms"><a href="">Social Media Handles</a></li>
-            <li class="linksmallterms"><a href="">Jobs</a></li>
-         </ul>
-         <div class="imagesection">
-            <img src="images/footerimg.png" alt="footerimg" class="qrcode">
-            <ul class="socialmedialinks">
-                <a href="" class="fa-brands fa-instagram" id="footersociallinks"></a>
-                <a href="" class="fa-brands fa-youtube" id="footersociallinks"></a>
-                <a href="" class="fa-brands fa-facebook" id="footersociallinks"></a>
-                <a href="" class="fa-brands fa-twitter" id="footersociallinks"></a>
-            </ul>
-         </div>
+    <!-- Footer -->
+    <footer class="footer bg-gray-900 pt-16 pb-8 px-4 border-t border-gray-800">
+      <div
+        class="footer-container max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12"
+      >
+        <!-- Company Info / Logo -->
+        <div class="footer-about">
+          <a
+            href="#home"
+            class="text-3xl font-bold text-text-light hover:text-primary transition duration-300 mb-4 block"
+          >
+            Flower<span class="text-primary">.</span>
+          </a>
+          <p class="text-text-muted text-sm max-w-xs">
+            Dedicated to delivering fresh, beautiful blooms and exceptional
+            service for every moment.
+          </p>
         </div>
 
-        <div class="copyrightsection">
-            <div class="paragraph">
-                <p class="coprighttext">&copy Copyright All Rights Reserved, Aditya Mishra <img id="brandlogo" src="images/adilogo.png" alt=""></p>
-            </div>
+        <!-- Quick Links -->
+        <div class="footer-links">
+          <h4 class="text-xl font-semibold mb-6 text-text-light">
+            Quick Links
+          </h4>
+          <ul class="space-y-3 text-text-muted">
+            <li>
+              <a
+                href="#contact"
+                class="hover:text-primary transition duration-300"
+                >Contact Us</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-primary transition duration-300"
+                >Terms Of Use</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-primary transition duration-300"
+                >Privacy Policy</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-primary transition duration-300"
+                >Cookie Policy</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-primary transition duration-300"
+                >Free Services</a
+              >
+            </li>
+          </ul>
         </div>
-    </section>
+
+        <!-- Explore Links -->
+        <div class="footer-links">
+          <h4 class="text-xl font-semibold mb-6 text-text-light">Explore</h4>
+          <ul class="space-y-3 text-text-muted">
+            <li>
+              <a
+                href="#about"
+                class="hover:text-primary transition duration-300"
+                >About Us</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-primary transition duration-300"
+                >Blog</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-primary transition duration-300"
+                >Posts</a
+              >
+            </li>
+            <li>
+              <a href="#" class="hover:text-primary transition duration-300"
+                >Jobs</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <!-- Connect / Social -->
+        <div class="footer-social">
+          <h4 class="text-xl font-semibold mb-6 text-text-light">Connect</h4>
+          <!-- QR Code Placeholder -->
+          <img
+            src="images/footerimg.png"
+            alt="QR Code"
+            class="qrcode mb-4 rounded-lg"
+          />
+
+          <div class="social-links flex space-x-4 text-3xl">
+            <a
+              href="#"
+              class="bx bxl-instagram text-text-light hover:text-primary transition duration-300"
+            ></a>
+            <a
+              href="#"
+              class="bx bxl-youtube text-text-light hover:text-primary transition duration-300"
+            ></a>
+            <a
+              href="#"
+              class="bx bxl-facebook text-text-light hover:text-primary transition duration-300"
+            ></a>
+            <a
+              href="#"
+              class="bx bxl-twitter text-text-light hover:text-primary transition duration-300"
+            ></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+      <div class="copyright text-center border-t border-gray-800 mt-12 pt-6">
+        <p class="text-sm text-text-muted">
+          &copy; 2024 Copyright All Rights Reserved, **Aditya Mishra**
+          <!-- Brand Logo Placeholder -->
+          <i
+            class="bx bx-badge-check text-primary text-lg align-middle ml-2"
+          ></i>
+        </p>
+      </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu Toggle -->
+    <script>
+      // Use a function to ensure it's available globally and for onclick events
+      function toggleMenu() {
+        const menuToggle = document.getElementById("menu-toggler");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const menuIcon = document.getElementById("menu-icon");
+
+        const isMenuOpen = mobileMenu.classList.contains("open");
+
+        if (isMenuOpen) {
+          // Close the menu
+          mobileMenu.classList.remove("open");
+          // Change icon to hamburger
+          menuIcon.classList.remove("bx-x");
+          menuIcon.classList.add("bx-menu");
+        } else {
+          // Open the menu
+          mobileMenu.classList.add("open");
+          // Change icon to 'X' (close)
+          menuIcon.classList.remove("bx-menu");
+          menuIcon.classList.add("bx-x");
+        }
+      }
+
+      // Function to explicitly close the menu, useful when a link is clicked
+      function closeMenu() {
+        const mobileMenu = document.getElementById("mobile-menu");
+        const menuIcon = document.getElementById("menu-icon");
+
+        mobileMenu.classList.remove("open");
+        menuIcon.classList.remove("bx-x");
+        menuIcon.classList.add("bx-menu");
+      }
+
+      // Attach event listener to the toggle button
+      document.addEventListener("DOMContentLoaded", () => {
+        const menuToggle = document.getElementById("menu-toggler");
+        menuToggle.addEventListener("click", toggleMenu);
+      });
+    </script>
   </body>
 </html>
